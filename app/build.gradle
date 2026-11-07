@@ -1,0 +1,40 @@
+plugins { id 'com.android.application' }
+
+def runNum = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger()
+
+android {
+    namespace 'com.kakario.endoscope'
+    compileSdk 34
+    defaultConfig {
+        applicationId 'com.kakario.endoscope'
+        minSdk 29
+        targetSdk 34
+        versionCode runNum
+        versionName "1.0.${runNum}"
+        ndk { abiFilters 'arm64-v8a', 'armeabi-v7a' }
+    }
+    signingConfigs {
+        release {
+            storeFile file('release.jks')
+            storePassword 'endo1234'
+            keyAlias 'endo'
+            keyPassword 'endo1234'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    packaging { jniLibs { useLegacyPackaging true } }
+}
+
+dependencies {
+    implementation 'com.herohan:UVCAndroid:1.0.11'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+}

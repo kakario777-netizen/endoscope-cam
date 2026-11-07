@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#000000">
+
+    <FrameLayout android:id="@+id/stage"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+        <TextureView android:id="@+id/preview"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <TextView android:id="@+id/status"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="#CCFFFFFF" android:textSize="17sp"
+        android:text="내시경을 C타입 단자에 꽂아 주세요" />
+
+    <LinearLayout android:id="@+id/topBar"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_gravity="top" android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp" android:paddingRight="12dp" android:paddingTop="12dp">
+        <TextView android:id="@+id/recTime"
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+            android:textColor="#FF5A5A" android:textSize="16sp" android:textStyle="bold" />
+        <TextView android:id="@+id/btnZoom" style="@style/TopBtn" android:text="1.0x" />
+        <TextView android:id="@+id/btnMirror" style="@style/TopBtn" android:text="반전" />
+        <TextView android:id="@+id/btnRotate" style="@style/TopBtn" android:text="회전" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_gravity="bottom" android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="28dp" android:paddingTop="12dp">
+        <FrameLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content">
+            <TextView android:id="@+id/btnGallery" style="@style/SideBtn" android:text="보관함" />
+        </FrameLayout>
+        <ImageButton android:id="@+id/btnShot"
+            android:layout_width="76dp" android:layout_height="76dp"
+            android:background="@drawable/btn_shutter"
+            android:contentDescription="사진 촬영" />
+        <FrameLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content">
+            <TextView android:id="@+id/btnRec" style="@style/SideBtn" android:text="녹화" />
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>
