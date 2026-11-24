@@ -1,6 +1,8 @@
 plugins { id 'com.android.application' }
 
-def runNum = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger()
+def ver = (System.getenv("APP_VERSION") ?: "1.0.0")
+def vp = ver.tokenize(".").collect { it.toInteger() }
+def vcode = vp[0] * 10000 + vp[1] * 100 + vp[2]
 
 android {
     namespace 'com.kakario.endoscope'
@@ -9,16 +11,16 @@ android {
         applicationId 'com.kakario.endoscope'
         minSdk 29
         targetSdk 34
-        versionCode runNum
-        versionName "1.0.${runNum}"
+        versionCode vcode
+        versionName ver
         ndk { abiFilters 'arm64-v8a', 'armeabi-v7a' }
     }
     signingConfigs {
         release {
             storeFile file('release.jks')
-            storePassword 'endo1234'
+            storePassword System.getenv("KEYSTORE_PASS")
             keyAlias 'endo'
-            keyPassword 'endo1234'
+            keyPassword System.getenv("KEYSTORE_PASS")
         }
     }
     lint { checkReleaseBuilds false; abortOnError false }

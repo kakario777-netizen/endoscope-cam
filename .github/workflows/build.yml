@@ -1,12 +1,12 @@
-name: Build APK
+name: Release APK
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    tags: [ 'v*' ]
 permissions:
-  contents: read
+  contents: write
 jobs:
   build:
+    if: github.repository_owner == 'kakario777-netizen'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,11 +17,21 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
+      - name: Signing key
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+        run: echo "$KEYSTORE_B64" | base64 -d > app/release.jks
       - name: Build
-        run: gradle :app:assembleRelease --stacktrace
-      - name: Rename
-        run: cp app/build/outputs/apk/release/app-release.apk EndoscopeCam-1.0.${{ github.run_number }}.apk
-      - uses: actions/upload-artifact@v4
+        env:
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          APP_VERSION: ${{ github.ref_name }}
+        run: |
+          export APP_VERSION="${APP_VERSION#v}"
+          gradle :app:assembleRelease
+          cp app/build/outputs/apk/release/app-release.apk "EndoscopeCam-${APP_VERSION}.apk"
+          rm -f app/release.jks
+      - uses: softprops/action-gh-release@v2
         with:
-          name: apk
-          path: EndoscopeCam-1.0.${{ github.run_number }}.apk
+          name: 내시경 카메라 ${{ github.ref_name }}
+          files: EndoscopeCam-*.apk
+          make_latest: true
