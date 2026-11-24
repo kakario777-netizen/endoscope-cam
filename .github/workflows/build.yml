@@ -1,7 +1,8 @@
 name: Release APK
 on:
   push:
-    tags: [ 'v*' ]
+    branches: [ main ]
+    paths: [ 'VERSION' ]
 permissions:
   contents: write
 jobs:
@@ -24,14 +25,15 @@ jobs:
       - name: Build
         env:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-          APP_VERSION: ${{ github.ref_name }}
         run: |
-          export APP_VERSION="${APP_VERSION#v}"
+          export APP_VERSION="$(cat VERSION | tr -d '[:space:]')"
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
           gradle :app:assembleRelease
           cp app/build/outputs/apk/release/app-release.apk "EndoscopeCam-${APP_VERSION}.apk"
           rm -f app/release.jks
       - uses: softprops/action-gh-release@v2
         with:
-          name: 내시경 카메라 ${{ github.ref_name }}
+          tag_name: v${{ env.APP_VERSION }}
+          name: 내시경 카메라 v${{ env.APP_VERSION }}
           files: EndoscopeCam-*.apk
           make_latest: true
