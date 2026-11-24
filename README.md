@@ -8,4 +8,4 @@
 - 회전 90°, 좌우 반전
 - 보관함: 찍은 사진·영상 모아보기, 길게 눌러 삭제
 
-APK는 Releases 페이지에서 받기.
+APK는 endoscope-cam-release 저장소의 Releases에서 받기.
